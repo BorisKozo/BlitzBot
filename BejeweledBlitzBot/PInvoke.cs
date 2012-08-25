@@ -12,6 +12,7 @@ namespace BejeweledBlitzBot
   [SuppressUnmanagedCodeSecurity]
   internal static class PInvoke
   {
+
     [StructLayout(LayoutKind.Sequential)]
     public struct RECT
     {

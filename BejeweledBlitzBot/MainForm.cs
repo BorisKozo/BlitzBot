@@ -14,6 +14,8 @@ namespace BejeweledBlitzBot
   public partial class MainForm : Form
   {
     private IntPtr _windowPointer = IntPtr.Zero;
+    private Analyzer _analyzer;
+
     public MainForm()
     {
       InitializeComponent();
@@ -62,9 +64,15 @@ namespace BejeweledBlitzBot
       }
     }
 
-    private void timer1_Tick(object sender, EventArgs e)
+    private void button1_Click(object sender, EventArgs e)
     {
+      Size squaresCount = new Size(Convert.ToInt32(GridXSelector.Value), Convert.ToInt32(GridYSelector.Value));
+      Size boardSize = new Size(Convert.ToInt32(WidthSelector.Value), Convert.ToInt32(HeightSelector.Value));
+      _analyzer = new Analyzer(squaresCount, 10, boardSize);
       UpdateImage();
+      ColorBoard.Image = _analyzer.GetGridData(CroppedImage.Image as Bitmap);
     }
+
+
   }
 }
