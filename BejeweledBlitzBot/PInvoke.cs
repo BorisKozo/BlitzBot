@@ -140,6 +140,31 @@ namespace BejeweledBlitzBot
       }
     }
 
+    [Flags]
+    public enum MouseEventFlags : int
+    {
+      LEFTDOWN = 0x00000002,
+      LEFTUP = 0x00000004,
+      MIDDLEDOWN = 0x00000020,
+      MIDDLEUP = 0x00000040,
+      MOVE = 0x00000001,
+      ABSOLUTE = 0x00008000,
+      RIGHTDOWN = 0x00000008,
+      RIGHTUP = 0x00000010,
+      WHEEL = 0x00000800,
+      XDOWN = 0x00000080,
+      XUP = 0x00000100
+    }
+
+    //Use the values of this enum for the 'dwData' parameter
+    //to specify an X button when using MouseEventFlags.XDOWN or
+    //MouseEventFlags.XUP for the dwFlags parameter.
+    public enum MouseEventDataXButtons : int
+    {
+      XBUTTON1 = 0x00000001,
+      XBUTTON2 = 0x00000002
+    }
+
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     internal static extern int GetWindowText(IntPtr hWnd, [Out] StringBuilder lpString, int nMaxCount);
 
@@ -152,5 +177,11 @@ namespace BejeweledBlitzBot
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     internal static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+
+    [DllImport("user32.dll")]
+    internal static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, IntPtr dwExtraInfo);
+
+    [DllImport("user32.dll")]
+    internal static extern bool SetCursorPos(int X, int Y);
   }
 }

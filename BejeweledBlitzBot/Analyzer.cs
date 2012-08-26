@@ -41,12 +41,10 @@ namespace BejeweledBlitzBot
     }
 
 
-    public Bitmap GetGridData(Bitmap image)
+    public Shape[,] GetGridData(Bitmap image, Graphics graphics)
     {
       _stopWatch.Restart();
-      Bitmap result = new Bitmap(_boardSize.Width, _boardSize.Height);
-      Graphics graphics = Graphics.FromImage(result);
-      //Shape[,] result = new Shape[_squareCount.Width, _squareCount.Height];
+      Shape[,] result = new Shape[_squareCount.Width, _squareCount.Height];
       for (int i = 0; i < _squareCount.Width; i++)
       {
         for (int j = 0; j < _squareCount.Height; j++)
@@ -55,6 +53,7 @@ namespace BejeweledBlitzBot
           int squareTop = j * _squareSize.Height;
           Color tempColor = GetAverageColor(squareLeft, squareTop, image);
           graphics.FillRectangle(new SolidBrush(tempColor), new Rectangle(squareLeft, squareTop, _squareSize.Width, _squareSize.Height));
+          result[i, j] = FromColor(tempColor);
         }
       }
 
@@ -65,6 +64,7 @@ namespace BejeweledBlitzBot
 
     private Color GetAverageColor(int left, int top, Bitmap image)
     {
+      Dictionary<Color, int> result = new Dictionary<Color, int>();
       int r = 0;
       int g = 0;
       int b = 0;
@@ -73,14 +73,45 @@ namespace BejeweledBlitzBot
         for (int j = 0; j < _sampleSize; j++)
         {
           Color tempColor = image.GetPixel(left + _sampleOffset.Width + i, top + _sampleOffset.Height + j);
+          if (result.ContainsKey(tempColor))
+            result[tempColor] = result[tempColor] + 1;
+          else
+            result.Add(tempColor, 1);
           r += tempColor.R;
           g += tempColor.G;
           b += tempColor.B;
         }
       }
 
-
       return Color.FromArgb(r / _sampleSizeSquared, g / _sampleSizeSquared, b / _sampleSizeSquared);
+
+    }
+
+    private Shape FromColor(Color color)
+    {
+
+      if (color.R == 223 && color.G == 49 && color.B == 223)
+        return new Shape(ShapeType.Triangle);
+
+      if (color.R == 249 && color.G == 28 && color.B == 57)
+        return new Shape(ShapeType.Square);
+
+      if (color.R == 12 && color.G == 118 && color.B == 232)
+        return new Shape(ShapeType.Diamond);
+
+      if (color.R == 253 && color.G == 237 && color.B == 35)
+        return new Shape(ShapeType.Rhombus);
+
+      if (color.R == 243 && color.G == 171 && color.B == 76)
+        return new Shape(ShapeType.Hexagon);
+
+      if (color.R == 50 && color.G == 213 && color.B == 85)
+        return new Shape(ShapeType.Octagon);
+
+      if (color.R == 235 && color.G == 235 && color.B == 235)
+        return new Shape(ShapeType.Circle);
+
+      return new Shape(ShapeType.Special);
     }
   }
 }

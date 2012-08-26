@@ -15,11 +15,17 @@ namespace BejeweledBlitzBot
   {
     private IntPtr _windowPointer = IntPtr.Zero;
     private Analyzer _analyzer;
+    private Graphics _colorBoardGraphics;
+    private int _boardTop;
+    private int _boardLeft;
+    private DateTime _gameStartTime;
+
+    private Random _random = new Random();
 
     public MainForm()
     {
       InitializeComponent();
-      UpdateWindow(); 
+      UpdateWindow();
     }
 
     private void UpdateWindow()
@@ -54,8 +60,10 @@ namespace BejeweledBlitzBot
                                        Convert.ToInt32(HeightSelector.Value),
                                        PixelFormat.Format32bppArgb);
         Graphics screen = Graphics.FromImage(screenShot);
-        screen.CopyFromScreen(windowRect.Left + Convert.ToInt32(OffsetXSelector.Value),
-                                windowRect.Top + Convert.ToInt32(OffsetYSelector.Value),
+        _boardLeft = windowRect.Left + Convert.ToInt32(OffsetXSelector.Value);
+        _boardTop = windowRect.Top + Convert.ToInt32(OffsetYSelector.Value);
+        screen.CopyFromScreen(_boardLeft, _boardTop
+                                ,
                                 0,
                                 0,
                                 screenShot.Size,
@@ -66,11 +74,47 @@ namespace BejeweledBlitzBot
 
     private void button1_Click(object sender, EventArgs e)
     {
-      Size squaresCount = new Size(Convert.ToInt32(GridXSelector.Value), Convert.ToInt32(GridYSelector.Value));
-      Size boardSize = new Size(Convert.ToInt32(WidthSelector.Value), Convert.ToInt32(HeightSelector.Value));
-      _analyzer = new Analyzer(squaresCount, 10, boardSize);
+    }
+
+    private void StartButton_Click(object sender, EventArgs e)
+    {
+      if (MainTimer.Enabled)
+      {
+        MainTimer.Enabled = false;
+        StartButton.Text = "Start";
+      }
+      else
+      {
+        Size squaresCount = new Size(Convert.ToInt32(GridXSelector.Value), Convert.ToInt32(GridYSelector.Value));
+        Size boardSize = new Size(Convert.ToInt32(WidthSelector.Value), Convert.ToInt32(HeightSelector.Value));
+        _analyzer = new Analyzer(squaresCount, 10, boardSize);
+
+        Bitmap tempImage = new Bitmap(boardSize.Width, boardSize.Height);
+        _colorBoardGraphics = Graphics.FromImage(tempImage);
+        ColorBoard.Image = tempImage;
+        _gameStartTime = DateTime.Now;
+        MainTimer.Enabled = true;
+        StartButton.Text = "Stop";
+      }
+    }
+
+    private void MainTimer_Tick(object sender, EventArgs e)
+    {
+      
       UpdateImage();
-      ColorBoard.Image = _analyzer.GetGridData(CroppedImage.Image as Bitmap);
+      Shape[,] shapesGrid = _analyzer.GetGridData(CroppedImage.Image as Bitmap,_colorBoardGraphics);
+      SimulateMouseClick(_boardLeft + _random.Next(320), _boardTop + _random.Next(320));
+      ColorBoard.Refresh();
+      TimeSpan diff = DateTime.Now.Subtract(_gameStartTime);
+      if (diff.TotalSeconds > 10)
+        StartButton_Click(StartButton, new EventArgs());
+    }
+
+    private void SimulateMouseClick(int x, int y)
+    {
+      PInvoke.SetCursorPos(x, y);
+      PInvoke.mouse_event((int)PInvoke.MouseEventFlags.LEFTDOWN, 0, 0, 0, IntPtr.Zero);
+      PInvoke.mouse_event((int)PInvoke.MouseEventFlags.LEFTUP, 0, 0, 0, IntPtr.Zero);
     }
 
 

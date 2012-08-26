@@ -33,6 +33,7 @@
       this.WindowNameLabel = new System.Windows.Forms.Label();
       this.WindowNameStatusLabel = new System.Windows.Forms.Label();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
+      this.StartButton = new System.Windows.Forms.Button();
       this.label5 = new System.Windows.Forms.Label();
       this.label6 = new System.Windows.Forms.Label();
       this.GridXSelector = new System.Windows.Forms.NumericUpDown();
@@ -46,9 +47,8 @@
       this.WidthSelector = new System.Windows.Forms.NumericUpDown();
       this.HeightSelector = new System.Windows.Forms.NumericUpDown();
       this.OffsetXSelector = new System.Windows.Forms.NumericUpDown();
-      this.timer1 = new System.Windows.Forms.Timer(this.components);
+      this.MainTimer = new System.Windows.Forms.Timer(this.components);
       this.ColorBoard = new System.Windows.Forms.PictureBox();
-      this.button1 = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.GridXSelector)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.GridYSelector)).BeginInit();
@@ -89,7 +89,7 @@
       // 
       // groupBox1
       // 
-      this.groupBox1.Controls.Add(this.button1);
+      this.groupBox1.Controls.Add(this.StartButton);
       this.groupBox1.Controls.Add(this.label5);
       this.groupBox1.Controls.Add(this.label6);
       this.groupBox1.Controls.Add(this.GridXSelector);
@@ -109,6 +109,16 @@
       this.groupBox1.TabIndex = 4;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Screen Configuration";
+      // 
+      // StartButton
+      // 
+      this.StartButton.Location = new System.Drawing.Point(336, 71);
+      this.StartButton.Name = "StartButton";
+      this.StartButton.Size = new System.Drawing.Size(75, 23);
+      this.StartButton.TabIndex = 13;
+      this.StartButton.Text = "Start";
+      this.StartButton.UseVisualStyleBackColor = true;
+      this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
       // 
       // label5
       // 
@@ -274,10 +284,10 @@
             0,
             0});
       // 
-      // timer1
+      // MainTimer
       // 
-      this.timer1.Enabled = true;
-      this.timer1.Interval = 10;
+      this.MainTimer.Interval = 10;
+      this.MainTimer.Tick += new System.EventHandler(this.MainTimer_Tick);
       // 
       // ColorBoard
       // 
@@ -286,16 +296,6 @@
       this.ColorBoard.Size = new System.Drawing.Size(320, 320);
       this.ColorBoard.TabIndex = 5;
       this.ColorBoard.TabStop = false;
-      // 
-      // button1
-      // 
-      this.button1.Location = new System.Drawing.Point(336, 71);
-      this.button1.Name = "button1";
-      this.button1.Size = new System.Drawing.Size(75, 23);
-      this.button1.TabIndex = 13;
-      this.button1.Text = "button1";
-      this.button1.UseVisualStyleBackColor = true;
-      this.button1.Click += new System.EventHandler(this.button1_Click);
       // 
       // MainForm
       // 
@@ -339,13 +339,13 @@
     private System.Windows.Forms.NumericUpDown WidthSelector;
     private System.Windows.Forms.NumericUpDown HeightSelector;
     private System.Windows.Forms.NumericUpDown OffsetXSelector;
-    private System.Windows.Forms.Timer timer1;
+    private System.Windows.Forms.Timer MainTimer;
     private System.Windows.Forms.Label label5;
     private System.Windows.Forms.Label label6;
     private System.Windows.Forms.NumericUpDown GridXSelector;
     private System.Windows.Forms.NumericUpDown GridYSelector;
     private System.Windows.Forms.PictureBox ColorBoard;
-    private System.Windows.Forms.Button button1;
+    private System.Windows.Forms.Button StartButton;
   }
 }
 
