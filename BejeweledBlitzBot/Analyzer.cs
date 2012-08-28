@@ -24,6 +24,7 @@ namespace BejeweledBlitzBot
     private Size _boardSize;
     private Size _squareSize;
 
+
     private Size _sampleOffset;
     private int _sampleSizeSquared;
 
@@ -49,10 +50,10 @@ namespace BejeweledBlitzBot
       {
         for (int j = 0; j < _squareCount.Height; j++)
         {
-          int squareLeft = i * _squareSize.Width;
-          int squareTop = j * _squareSize.Height;
+          int squareLeft = i * SquareSize.Width;
+          int squareTop = j * SquareSize.Height;
           Color tempColor = GetAverageColor(squareLeft, squareTop, image);
-          graphics.FillRectangle(new SolidBrush(tempColor), new Rectangle(squareLeft, squareTop, _squareSize.Width, _squareSize.Height));
+          graphics.FillRectangle(new SolidBrush(tempColor), new Rectangle(squareLeft, squareTop, SquareSize.Width, SquareSize.Height));
           result[i, j] = FromColor(tempColor);
         }
       }
@@ -111,7 +112,18 @@ namespace BejeweledBlitzBot
       if (color.R == 235 && color.G == 235 && color.B == 235)
         return new Shape(ShapeType.Circle);
 
-      return new Shape(ShapeType.Special);
+      return new Shape(ShapeType.Unknown);
     }
+
+    public Size BoardSize
+    {
+      get { return _boardSize; }
+    }
+
+    public Size SquareSize
+    {
+      get { return _squareSize; }
+    }
+
   }
 }

@@ -6,8 +6,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BejeweledBlitzBot.Rules;
 
 namespace BejeweledBlitzBot
 {
@@ -26,6 +28,7 @@ namespace BejeweledBlitzBot
     {
       InitializeComponent();
       UpdateWindow();
+      MainTimer.Interval = 300;
     }
 
     private void UpdateWindow()
@@ -72,10 +75,6 @@ namespace BejeweledBlitzBot
       }
     }
 
-    private void button1_Click(object sender, EventArgs e)
-    {
-    }
-
     private void StartButton_Click(object sender, EventArgs e)
     {
       if (MainTimer.Enabled)
@@ -103,11 +102,27 @@ namespace BejeweledBlitzBot
       
       UpdateImage();
       Shape[,] shapesGrid = _analyzer.GetGridData(CroppedImage.Image as Bitmap,_colorBoardGraphics);
-      SimulateMouseClick(_boardLeft + _random.Next(320), _boardTop + _random.Next(320));
+      List<ClickMove> moves = RulesManager.GetMoves(shapesGrid);
+      foreach (ClickMove move in moves)
+      {
+        Thread.Sleep(100);
+        MoveSquares(move);
+      }
       ColorBoard.Refresh();
       TimeSpan diff = DateTime.Now.Subtract(_gameStartTime);
-      if (diff.TotalSeconds > 10)
+      if (diff.TotalSeconds > 65)
         StartButton_Click(StartButton, new EventArgs());
+    }
+
+    private void MoveSquares(int fromColumn, int fromRow, int toColumn, int toRow)
+    {
+      SimulateMouseClick(_boardLeft + fromColumn*_analyzer.SquareSize.Width + 1, _boardTop + fromRow*_analyzer.SquareSize.Height + 1);
+      SimulateMouseClick(_boardLeft + toColumn * _analyzer.SquareSize.Width + 1, _boardTop + toRow * _analyzer.SquareSize.Height + 1);
+    }
+
+    private void MoveSquares(ClickMove move)
+    {
+      MoveSquares(move.FromColumn, move.FromRow, move.ToColumn, move.ToRow);
     }
 
     private void SimulateMouseClick(int x, int y)
@@ -115,6 +130,11 @@ namespace BejeweledBlitzBot
       PInvoke.SetCursorPos(x, y);
       PInvoke.mouse_event((int)PInvoke.MouseEventFlags.LEFTDOWN, 0, 0, 0, IntPtr.Zero);
       PInvoke.mouse_event((int)PInvoke.MouseEventFlags.LEFTUP, 0, 0, 0, IntPtr.Zero);
+    }
+
+    private void ClipButton_Click(object sender, EventArgs e)
+    {
+      UpdateImage();
     }
 
 

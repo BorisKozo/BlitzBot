@@ -49,6 +49,7 @@
       this.OffsetXSelector = new System.Windows.Forms.NumericUpDown();
       this.MainTimer = new System.Windows.Forms.Timer(this.components);
       this.ColorBoard = new System.Windows.Forms.PictureBox();
+      this.ClipButton = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.GridXSelector)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.GridYSelector)).BeginInit();
@@ -89,6 +90,7 @@
       // 
       // groupBox1
       // 
+      this.groupBox1.Controls.Add(this.ClipButton);
       this.groupBox1.Controls.Add(this.StartButton);
       this.groupBox1.Controls.Add(this.label5);
       this.groupBox1.Controls.Add(this.label6);
@@ -297,6 +299,16 @@
       this.ColorBoard.TabIndex = 5;
       this.ColorBoard.TabStop = false;
       // 
+      // ClipButton
+      // 
+      this.ClipButton.Location = new System.Drawing.Point(336, 19);
+      this.ClipButton.Name = "ClipButton";
+      this.ClipButton.Size = new System.Drawing.Size(75, 23);
+      this.ClipButton.TabIndex = 14;
+      this.ClipButton.Text = "Clip";
+      this.ClipButton.UseVisualStyleBackColor = true;
+      this.ClipButton.Click += new System.EventHandler(this.ClipButton_Click);
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -346,6 +358,7 @@
     private System.Windows.Forms.NumericUpDown GridYSelector;
     private System.Windows.Forms.PictureBox ColorBoard;
     private System.Windows.Forms.Button StartButton;
+    private System.Windows.Forms.Button ClipButton;
   }
 }
 
