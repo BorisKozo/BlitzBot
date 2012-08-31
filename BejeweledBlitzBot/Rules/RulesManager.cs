@@ -14,12 +14,12 @@ namespace BejeweledBlitzBot.Rules
       _rules.Add(new SameThreeRule());
     }
 
-    public static List<ClickMove> GetMoves(Shape[,] board)
+    public static HashSet<ClickMove> GetMoves(Shape[,] board)
     {
-      List<ClickMove> result = new List<ClickMove>();
+      HashSet<ClickMove> result = new HashSet<ClickMove>();
       foreach (BaseRule rule in _rules)
       {
-        result.AddRange(rule.GetMoves(board));
+        result.UnionWith(rule.GetMoves(board));
       }
 
       return result;

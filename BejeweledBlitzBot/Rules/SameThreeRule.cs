@@ -6,46 +6,51 @@ using System.Threading.Tasks;
 
 namespace BejeweledBlitzBot.Rules
 {
-  public class SameThreeRule:BaseRule
+  public class SameThreeRule : BaseRule
   {
-    public override List<ClickMove> GetMoves(Shape[,] board)
+    public override HashSet<ClickMove> GetMoves(Shape[,] board)
     {
       int columnCount = board.GetLength(0);
       int rowCount = board.GetLength(1);
       int totalSize = rowCount * columnCount;
-      List<ClickMove> result = new List<ClickMove>();
+      HashSet<ClickMove> result = new HashSet<ClickMove>();
 
       for (int j = rowCount - 1; j >= 0; j--)
       {
         for (int i = columnCount - 1; i >= 0; i--)
         {
-          
+
           if (i < columnCount - 1)
           {
-            float right = RateMove(board, board[i + 1, j], i, j);
-            if (right > 0)
-              result.Add(new ClickMove(i, j, i + 1, j));
+            ClickMove rightMove = new ClickMove(i + 1, j, i, j);
+            float right = RateMove(board, rightMove);
+            
+            if (right > 0 && !result.Contains(rightMove))
+              result.Add(rightMove);
           }
 
           if (i > 0)
           {
-            float left = RateMove(board, board[i -1, j], i, j);
-            if (left > 0)
-              result.Add(new ClickMove(i, j, i - 1, j));
+            ClickMove leftMove = new ClickMove(i - 1, j, i, j);
+            float left = RateMove(board, leftMove);
+            if (left > 0 && !result.Contains(leftMove))
+              result.Add(leftMove);
           }
 
           if (j < rowCount - 1)
           {
-            float down = RateMove(board, board[i, j+1], i, j);
-            if (down > 0)
-              result.Add(new ClickMove(i, j, i, j+1));
+            ClickMove downMove = new ClickMove(i, j + 1, i, j);
+            float down = RateMove(board, downMove);
+            if (down > 0 && !result.Contains(downMove))
+              result.Add(downMove);
           }
 
           if (j > 0)
           {
-            float up = RateMove(board, board[i, j - 1], i, j);
-            if (up > 0)
-              result.Add(new ClickMove(i, j, i, j - 1));
+            ClickMove upMove = new ClickMove(i, j - 1, i, j);
+            float up = RateMove(board, upMove);
+            if (up > 0 && !result.Contains(upMove))
+              result.Add(upMove);
           }
 
         }

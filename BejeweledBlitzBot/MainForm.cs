@@ -102,15 +102,15 @@ namespace BejeweledBlitzBot
       
       UpdateImage();
       Shape[,] shapesGrid = _analyzer.GetGridData(CroppedImage.Image as Bitmap,_colorBoardGraphics);
-      List<ClickMove> moves = RulesManager.GetMoves(shapesGrid);
+      HashSet<ClickMove> moves = RulesManager.GetMoves(shapesGrid);
       foreach (ClickMove move in moves)
       {
-        Thread.Sleep(100);
+        //Thread.Sleep(100);
         MoveSquares(move);
       }
       ColorBoard.Refresh();
       TimeSpan diff = DateTime.Now.Subtract(_gameStartTime);
-      if (diff.TotalSeconds > 65)
+      if (diff.TotalSeconds > 80)
         StartButton_Click(StartButton, new EventArgs());
     }
 

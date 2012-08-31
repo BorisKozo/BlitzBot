@@ -88,28 +88,33 @@ namespace BejeweledBlitzBot
 
     }
 
+    private bool L(byte a, byte b)
+    {
+      return Math.Abs(Convert.ToInt32(a) - Convert.ToInt32(b)) < 15;
+    }
+
     private Shape FromColor(Color color)
     {
 
-      if (color.R == 223 && color.G == 49 && color.B == 223)
+      if (L(color.R, 227) && L(color.G, 37) && L(color.B, 227))
         return new Shape(ShapeType.Triangle);
 
-      if (color.R == 249 && color.G == 28 && color.B == 57)
+      if (L(color.R, 246) && L(color.G, 26) && L(color.B, 55))
         return new Shape(ShapeType.Square);
 
-      if (color.R == 12 && color.G == 118 && color.B == 232)
+      if (L(color.R, 10) && L(color.G, 121) && L(color.B, 235))
         return new Shape(ShapeType.Diamond);
 
-      if (color.R == 253 && color.G == 237 && color.B == 35)
+      if (L(color.R, 251) && L(color.G, 231) && L(color.B, 31))
         return new Shape(ShapeType.Rhombus);
 
-      if (color.R == 243 && color.G == 171 && color.B == 76)
+      if (L(color.R, 243) && L(color.G, 146) && L(color.B, 54))
         return new Shape(ShapeType.Hexagon);
 
-      if (color.R == 50 && color.G == 213 && color.B == 85)
+      if (L(color.R, 33) && L(color.G, 206) && L(color.B, 62))
         return new Shape(ShapeType.Octagon);
 
-      if (color.R == 235 && color.G == 235 && color.B == 235)
+      if (L(color.R, 225) && L(color.G, 225) && L(color.B, 225))
         return new Shape(ShapeType.Circle);
 
       return new Shape(ShapeType.Unknown);
