@@ -28,7 +28,7 @@ namespace BejeweledBlitzBot
     {
       InitializeComponent();
       UpdateWindow();
-      MainTimer.Interval = 300;
+      MainTimer.Interval = 85;
     }
 
     private void UpdateWindow()
@@ -103,14 +103,15 @@ namespace BejeweledBlitzBot
       UpdateImage();
       Shape[,] shapesGrid = _analyzer.GetGridData(CroppedImage.Image as Bitmap,_colorBoardGraphics);
       HashSet<ClickMove> moves = RulesManager.GetMoves(shapesGrid);
-      foreach (ClickMove move in moves)
+      List<ClickMove> sortedMoves = new List<ClickMove>(moves);
+      sortedMoves.Sort();
+      foreach (ClickMove move in sortedMoves)
       {
-        //Thread.Sleep(100);
         MoveSquares(move);
       }
       ColorBoard.Refresh();
       TimeSpan diff = DateTime.Now.Subtract(_gameStartTime);
-      if (diff.TotalSeconds > 80)
+      if (diff.TotalSeconds > 95)
         StartButton_Click(StartButton, new EventArgs());
     }
 

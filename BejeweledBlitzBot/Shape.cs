@@ -10,7 +10,7 @@ namespace BejeweledBlitzBot
   { Triangle, Square, Rhombus, Diamond, Hexagon, Octagon, Circle, Special, Unknown };
 
   public enum SpecialType
-  { None, Flame, Light, Lightning }
+  { None, Flame, Light, Lightning, Coin }
 
   public class Shape
   {

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BejeweledBlitzBot
 {
-  public struct ClickMove : IEquatable<ClickMove>
+  public struct ClickMove : IEquatable<ClickMove>, IComparable<ClickMove>
   {
+    public float Rating { get; set; }
     public int FromColumn { get; set; }
     public int FromRow { get; set; }
     public int ToColumn { get; set; }
@@ -19,6 +20,7 @@ namespace BejeweledBlitzBot
       FromRow = fromRow;
       ToColumn = toColumn;
       ToRow = toRow;
+      Rating = 0;
     }
 
     public override bool Equals(object obj)
@@ -65,6 +67,11 @@ namespace BejeweledBlitzBot
 
       return false;
 
+    }
+
+    public int CompareTo(ClickMove other)
+    {
+      return Rating.CompareTo(other.Rating);
     }
   }
 }

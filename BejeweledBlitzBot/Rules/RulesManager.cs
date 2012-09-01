@@ -11,6 +11,7 @@ namespace BejeweledBlitzBot.Rules
     private static List<BaseRule> _rules = new List<BaseRule>();
     static RulesManager()
     {
+      _rules.Add(new LightningRule());
       _rules.Add(new SameThreeRule());
     }
 
@@ -19,7 +20,9 @@ namespace BejeweledBlitzBot.Rules
       HashSet<ClickMove> result = new HashSet<ClickMove>();
       foreach (BaseRule rule in _rules)
       {
-        result.UnionWith(rule.GetMoves(board));
+        result = rule.GetMoves(board);
+        if (result.Count > 0)
+          break;
       }
 
       return result;

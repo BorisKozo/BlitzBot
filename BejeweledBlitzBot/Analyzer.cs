@@ -69,11 +69,21 @@ namespace BejeweledBlitzBot
       int r = 0;
       int g = 0;
       int b = 0;
+      int count = 0;
       for (int i = 0; i < _sampleSize; i++)
       {
         for (int j = 0; j < _sampleSize; j++)
         {
           Color tempColor = image.GetPixel(left + _sampleOffset.Width + i, top + _sampleOffset.Height + j);
+          
+          //This is to avoid counting numbers in multipliers
+          if (tempColor.R == 255 && tempColor.G == 255 && tempColor.B == 255)
+            continue;
+
+          if (tempColor.R == 0 && tempColor.G == 0 && tempColor.B == 0)
+            continue;
+
+          count++;
           if (result.ContainsKey(tempColor))
             result[tempColor] = result[tempColor] + 1;
           else
@@ -84,7 +94,9 @@ namespace BejeweledBlitzBot
         }
       }
 
-      return Color.FromArgb(r / _sampleSizeSquared, g / _sampleSizeSquared, b / _sampleSizeSquared);
+      if (count == 0)
+        return Color.FromArgb(0);
+      return Color.FromArgb(r / count, g / count, b / count);
 
     }
 
@@ -116,6 +128,13 @@ namespace BejeweledBlitzBot
 
       if (L(color.R, 225) && L(color.G, 225) && L(color.B, 225))
         return new Shape(ShapeType.Circle);
+
+      if (L(color.R, 197) && L(color.G, 160) && L(color.B, 38))
+        return new Shape(ShapeType.Rhombus,SpecialType.Coin);
+
+      if (L(color.R, 150) && L(color.G, 150) && L(color.B, 100))
+        return new Shape(ShapeType.Special,SpecialType.Lightning);
+
 
       return new Shape(ShapeType.Unknown);
     }
