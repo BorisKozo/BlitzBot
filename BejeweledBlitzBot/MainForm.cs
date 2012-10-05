@@ -28,7 +28,7 @@ namespace BejeweledBlitzBot
     {
       InitializeComponent();
       UpdateWindow();
-      MainTimer.Interval = 85;
+      MainTimer.Interval = 80;
     }
 
     private void UpdateWindow()
@@ -107,11 +107,12 @@ namespace BejeweledBlitzBot
       sortedMoves.Sort();
       foreach (ClickMove move in sortedMoves)
       {
+        Thread.Sleep(10);
         MoveSquares(move);
       }
       ColorBoard.Refresh();
       TimeSpan diff = DateTime.Now.Subtract(_gameStartTime);
-      if (diff.TotalSeconds > 95)
+      if (diff.TotalSeconds > 90)
         StartButton_Click(StartButton, new EventArgs());
     }
 

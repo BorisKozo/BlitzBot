@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace BejeweledBlitzBot.Rules
 {
-  public class SameRule : BaseMatchRule
+  class MultiplierRule : BaseMatchRule
   {
 
     public override HashSet<ClickMove> GetMoves(Shape[,] board)
     {
-      return base.GetMoves(board, EmptyPredicate);
+      return base.GetMoves(board, IsMultiplier);
     }
 
-    private bool EmptyPredicate(Shape[,] arg1, int arg2, int arg3)
+    private bool IsMultiplier(Shape[,] board, int column, int row)
     {
-      return true;
+      return board[column, row].Special == SpecialType.Multiplier;
     }
   }
 }

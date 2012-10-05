@@ -12,7 +12,8 @@ namespace BejeweledBlitzBot.Rules
     static RulesManager()
     {
       _rules.Add(new LightningRule());
-      _rules.Add(new SameThreeRule());
+      _rules.Add(new MultiplierRule());
+      _rules.Add(new SameRule());
     }
 
     public static HashSet<ClickMove> GetMoves(Shape[,] board)

@@ -55,8 +55,10 @@
     <Compile Include="PInvoke.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\BaseMatchRule.cs" />
     <Compile Include="Rules\BaseRule.cs" />
     <Compile Include="Rules\LightningRule.cs" />
+    <Compile Include="Rules\MultiplierRule.cs" />
     <Compile Include="Rules\RulesManager.cs" />
     <Compile Include="Rules\SameRule.cs" />
     <Compile Include="Shape.cs" />

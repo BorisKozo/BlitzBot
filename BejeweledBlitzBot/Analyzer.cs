@@ -52,23 +52,98 @@ namespace BejeweledBlitzBot
         {
           int squareLeft = i * SquareSize.Width;
           int squareTop = j * SquareSize.Height;
-          Color tempColor = GetAverageColor(squareLeft, squareTop, image);
-          graphics.FillRectangle(new SolidBrush(tempColor), new Rectangle(squareLeft, squareTop, SquareSize.Width, SquareSize.Height));
-          result[i, j] = FromColor(tempColor);
+          int whiteCount = 0;
+          int blackCount = 0;
+          if (IsMultiplier(squareLeft, squareTop, image))
+          {
+            Color multiplierColor = GetMultiplierColor(squareLeft, squareTop, image);
+            graphics.FillRectangle(new SolidBrush(multiplierColor), new Rectangle(squareLeft, squareTop, SquareSize.Width, SquareSize.Height));
+            Shape shape = FromMultiplierColor(multiplierColor);
+            result[i, j] = shape;
+            if (shape.Type == ShapeType.Unknown)
+            {
+              Console.Out.WriteLine(String.Format("Multiplier at - {0} {1}", i, j));
+              Console.Out.WriteLine(String.Format("Type {0} Color {1} {2} {3}", shape.Type, multiplierColor.R, multiplierColor.G, multiplierColor.B));
+            }
+          }
+          else
+          {
+            Color tempColor = GetAverageColor(squareLeft, squareTop, image, out whiteCount, out blackCount);
+            graphics.FillRectangle(new SolidBrush(tempColor), new Rectangle(squareLeft, squareTop, SquareSize.Width, SquareSize.Height));
+            Shape shape = FromColor(tempColor);
+            result[i, j] = shape;
+          }
         }
       }
 
       _stopWatch.Stop();
-      Console.Out.WriteLine("Get data time " + _stopWatch.ElapsedMilliseconds);
+      //Console.Out.WriteLine("Get data time " + _stopWatch.ElapsedMilliseconds);
       return result;
     }
 
-    private Color GetAverageColor(int left, int top, Bitmap image)
+    private Shape FromMultiplierColor(Color color)
+    {
+      if (L(color.R, 164) && L(color.G, 15) && L(color.B, 165))
+        return new Shape(ShapeType.Triangle, SpecialType.Multiplier);
+
+      if (L(color.R, 211) && L(color.G, 13) && L(color.B, 25))
+        return new Shape(ShapeType.Square, SpecialType.Multiplier);
+
+      if (L(color.R, 191) && L(color.G, 11) && L(color.B, 22))
+        return new Shape(ShapeType.Square, SpecialType.Multiplier);
+
+
+      if (L(color.R, 11) && L(color.G, 115) && L(color.B, 208))
+        return new Shape(ShapeType.Diamond, SpecialType.Multiplier);
+
+      if (L(color.R, 183) && L(color.G, 181) && L(color.B, 0))
+        return new Shape(ShapeType.Rhombus, SpecialType.Multiplier);
+
+      if (L(color.R, 208) && L(color.G, 93) && L(color.B, 18))
+        return new Shape(ShapeType.Hexagon, SpecialType.Multiplier);
+
+      if (L(color.R, 0) && L(color.G, 148) && L(color.B, 8))
+        return new Shape(ShapeType.Octagon, SpecialType.Multiplier);
+
+      if (L(color.R, 157) && L(color.G, 157) && L(color.B, 157))
+        return new Shape(ShapeType.Circle, SpecialType.Multiplier);
+
+
+      return new Shape(ShapeType.Unknown);
+    }
+
+    private Color GetMultiplierColor(int squareLeft, int squareTop, Bitmap image)
+    {
+      return image.GetPixel(squareLeft + 9, squareTop + + 20);
+    }
+
+    private bool IsMultiplier(int squareLeft, int squareTop, Bitmap image)
+    {
+      Color tempColor = Color.Wheat;
+      int innerOffsetX = 12;
+      int innerOffsetY = 18;
+      bool result = true;
+      for (int i = 0; i < 3 && result; i++)
+      {
+        for (int j = 0; j < 3 && result; j++)
+        {
+          tempColor = image.GetPixel(squareLeft +  innerOffsetX + i, squareTop + innerOffsetY + j);
+          if (tempColor.R != 255 || tempColor.G != 255 || tempColor.B != 255)
+            result = false;
+        }
+      }
+
+      return result;
+    }
+
+    private Color GetAverageColor(int left, int top, Bitmap image, out int whiteCount, out int blackCount)
     {
       Dictionary<Color, int> result = new Dictionary<Color, int>();
       int r = 0;
       int g = 0;
       int b = 0;
+      whiteCount = 0;
+      blackCount = 0;
       int count = 0;
       for (int i = 0; i < _sampleSize; i++)
       {
@@ -78,10 +153,16 @@ namespace BejeweledBlitzBot
           
           //This is to avoid counting numbers in multipliers
           if (tempColor.R == 255 && tempColor.G == 255 && tempColor.B == 255)
+          {
+            whiteCount++;
             continue;
+          }
 
           if (tempColor.R == 0 && tempColor.G == 0 && tempColor.B == 0)
+          {
+            blackCount++;
             continue;
+          }
 
           count++;
           if (result.ContainsKey(tempColor))
@@ -134,7 +215,6 @@ namespace BejeweledBlitzBot
 
       if (L(color.R, 150) && L(color.G, 150) && L(color.B, 100))
         return new Shape(ShapeType.Special,SpecialType.Lightning);
-
 
       return new Shape(ShapeType.Unknown);
     }

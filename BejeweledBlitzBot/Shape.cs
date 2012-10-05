@@ -10,7 +10,7 @@ namespace BejeweledBlitzBot
   { Triangle, Square, Rhombus, Diamond, Hexagon, Octagon, Circle, Special, Unknown };
 
   public enum SpecialType
-  { None, Flame, Light, Lightning, Coin }
+  { None, Flame, Light, Lightning, Coin, Multiplier }
 
   public class Shape
   {
@@ -31,6 +31,7 @@ namespace BejeweledBlitzBot
     internal SpecialType Special
     {
       get { return _special; }
+      set { _special = value; }
     }
 
     public override int GetHashCode()
